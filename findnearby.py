@@ -112,7 +112,7 @@ def get_direction(lat1, lng1, lat2, lng2, k):
 def get_nearest_dist(lat, lng, keyword, key):
 
     places, status, message = nearby_search(lat, lng, keyword)
-    time.sleep(0.1)
+    #time.sleep(0.1)
     # print status,
     d = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     n = ['', '', '']
@@ -133,7 +133,7 @@ def get_nearest_dist(lat, lng, keyword, key):
             d[2] = dd[2]
             break
     #print '1-----------' + n[0]
-    time.sleep(0.1)
+    #time.sleep(0.1)
     for i in range(0, len(places)):
         places[i]['name'] = places[i]['name'].lower()
         #print places[i]['name']
@@ -154,7 +154,7 @@ def get_nearest_dist(lat, lng, keyword, key):
         d[3] = dd[0]
         d[4] = dd[1]
         d[5] = dd[2]
-    time.sleep(0.1)
+    #time.sleep(0.1)
     for i in range(0, len(places)):
         places[i]['name'] = places[i]['name'].lower()
         #print places[i]['name']
@@ -179,10 +179,10 @@ def get_nearest_dist(lat, lng, keyword, key):
 def main():
     # print calendar.timegm(time.strptime('Feb 6, 2017 @ 16:00:00', '%b %d, %Y @ %H:%M:%S'))
     myCood = Proj("+proj=utm +zone=47 +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
-    wb = xlrd.open_workbook('to_fix_distance.xlsx')
+    wb = xlrd.open_workbook('village_stat_2.xlsx')
     ws = wb.sheet_by_index(0)
     k_i = 0
-    xlname = 'fixed_distance_atm_2.xlsx'
+    xlname = 'check_all_atm.xlsx'
 
     if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), xlname)):
         owb = openpyxl.load_workbook(xlname, read_only=False)
@@ -194,24 +194,25 @@ def main():
     else:
         ows = owb.active
 
-    for i in range(808, ws.nrows):
+    for i in range(1, ws.nrows):
         if k_i == 5:
             break
         print '%d: %f' % (k_i, float(i)/ws.nrows),
         print ws.cell_value(i, 0),
         print ws.cell_value(i, 1),
         status = ''
-        print float(ws.cell_value(i, 2)), float(ws.cell_value(i, 3)),
-        lng, lat = myCood(float(ws.cell_value(i, 2)), float(ws.cell_value(i, 3)), inverse=True)
+        #print float(ws.cell_value(i, 2)), float(ws.cell_value(i, 3)),
+        #lng, lat = myCood(float(ws.cell_value(i, 2)), float(ws.cell_value(i, 3)), inverse=True)
+        #print lat, lng,
+        lat = str(ws.cell_value(i, 93))
+        lng = str(ws.cell_value(i, 92))
         print lat, lng,
-        lat = str(lat)
-        lng = str(lng)
-        d, names, status, message = get_nearest_dist(lat, lng, u'atm', key_list[k_i])
+        d, names, status, message = get_nearest_dist(lat, lng, u'atm', master_key)
         print status,
 
         while status == 'OVER_QUERY_LIMIT' and k_i < 5:
             k_i += 1
-            d, names, status, message = get_nearest_dist(lat, lng, u'atm', key_list[k_i])
+            d, names, status, message = get_nearest_dist(lat, lng, u'atm', master_key)
             print status,
 
         if status == 'OK':
@@ -231,7 +232,7 @@ def main():
             c = ows.cell(row=i, column=16, value=d[8])
             print ''
             owb.save(xlname)
-
+        print ''
 
 if __name__ == "__main__":
     main()
