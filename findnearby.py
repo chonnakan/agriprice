@@ -77,7 +77,7 @@ def nearby_search(lat, lng, name):
 
 def get_direction(lat1, lng1, lat2, lng2, k):
     url = 'https://maps.googleapis.com/maps/api/directions/json?origin='
-    url = url + lat1 + ',' + lng1 + '&destination=' + lat2 + ',' + lng2 + '&avoid=tolls&departure_time=1486396800&key=' + k
+    url = url + lat1 + ',' + lng1 + '&destination=' + lat2 + ',' + lng2 + '&avoid=tolls&departure_time=1514764799000&key=' + k
     req = requests.get(url)
     res = json.loads(req.content)
     err_message = ''
