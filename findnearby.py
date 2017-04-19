@@ -7,7 +7,6 @@ import os
 import calendar
 import time
 import xlrd
-from pyproj import Proj
 
 master_key = 'AIzaSyA9RDsFBy2tE2PXnx9ecqCxN7mBXMsuHCE'
 
@@ -177,8 +176,6 @@ def get_nearest_dist(lat, lng, keyword, key):
 
 
 def main():
-    # print calendar.timegm(time.strptime('Feb 6, 2017 @ 16:00:00', '%b %d, %Y @ %H:%M:%S'))
-    myCood = Proj("+proj=utm +zone=47 +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
     wb = xlrd.open_workbook('village_stat_2.xlsx')
     ws = wb.sheet_by_index(0)
     k_i = 0
