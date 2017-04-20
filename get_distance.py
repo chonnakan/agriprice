@@ -119,7 +119,7 @@ def get_nearest_dist(lat, lng, keyword, key):
     for i in range(0, len(places)):
         places[i]['name'] = places[i]['name'].lower()
         #print places[i]['name']
-        if u'atm' in places[i]['name'] or u'เอทีเอ็ม' in places[i]['name']:
+        if not (u'atm' in places[i]['name'] or u'เอทีเอ็ม' in places[i]['name']):
             n[0] = places[i]['name']
             p1 = places[i]
             dd, status, message = get_direction(lat, lng, str(p1['geometry']['location']['lat']),
@@ -133,7 +133,7 @@ def get_nearest_dist(lat, lng, keyword, key):
     for i in range(0, len(places)):
         places[i]['name'] = places[i]['name'].lower()
         #print places[i]['name']
-        if u'atm' in places[i]['name'] or u'เอทีเอ็ม' in places[i]['name']:
+        if not (u'atm' in places[i]['name'] or u'เอทีเอ็ม' in places[i]['name']):
             if u'ธ.ก.ส.' in places[i]['name'] or u'ธกส' in places[i]['name'] or u'เพื่อการเกษตร' in places[i]['name'] or \
                             u'baac' in places[i]['name'] or u'agriculture' in places[i]['name'] or \
                             u'ออมสิน' in places[i]['name'] or u'gsb' in places[i]['name'] or \
@@ -154,7 +154,7 @@ def get_nearest_dist(lat, lng, keyword, key):
     for i in range(0, len(places)):
         places[i]['name'] = places[i]['name'].lower()
         #print places[i]['name']
-        if u'atm' in places[i]['name'] or u'เอทีเอ็ม' in places[i]['name']:
+        if not (u'atm' in places[i]['name'] or u'เอทีเอ็ม' in places[i]['name']):
             if not(u'ธ.ก.ส.' in places[i]['name'] or u'ธกส' in places[i]['name'] or u'เพื่อการเกษตร' in places[i]['name'] or u'baac' in places[i]['name'] or
                            u'agriculture' in places[i]['name'] or u'ออมสิน' in places[i]['name'] or u'gsb' in places[i]['name'] or u'government savning' in places[i]['name'] or
                            u'อิสลาม' in places[i]['name'] or u'ibank' in places[i]['name'] or u'islam' in places[i]['name']):
@@ -206,10 +206,10 @@ def main():
 
         while status == 'OVER_QUERY_LIMIT' and k_i < 5:
             k_i += 1
-            d, names, status, message = get_nearest_dist(lat, lng, u'ธนธนาคาร', master_key)
+            d, names, status, message = get_nearest_dist(lat, lng, u'ธนาคาร', master_key)
             print(status),
 
-        if status == 'OK':
+        if status == 'OK' or  status != 'OVER_QUERY_LIMIT':
             for j in range(0, 4):
                 c = ows.cell(row=i, column=j+1, value=ws.cell_value(i, j))
             c = ows.cell(row=i, column=5, value=names[0])
