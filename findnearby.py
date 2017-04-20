@@ -229,7 +229,6 @@ def main():
             c = ows.cell(row=i, column=16, value=d[8])
             print ''
             owb.save(xlname)
-        print ''
 
 if __name__ == "__main__":
     main()
