@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import requests
 import json
 import openpyxl
@@ -19,7 +18,7 @@ def nearby_search(lat, lng, name):
     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
     url = url + lat + ',' + lng + '&keyword=' + urllib.parse.quote(name.encode('utf8')) + '&rankby=distance&key=' + master_key
     req = requests.get(url)
-    res = json.loads(req.content)
+    res = json.loads(req.content.decode('utf-8'))
     list = []
     #print url
     err_message = ''
@@ -34,7 +33,7 @@ def nearby_search(lat, lng, name):
             url = url + lat + ',' + lng + '&keyword=' + urllib.parse.quote(name.encode('utf8')) + '&rankby=distance&key=' + master_key + '&pagetoken=' + page_token
             #print url
             req = requests.get(url)
-            res = json.loads(req.content)
+            res = json.loads(req.content.decode('utf-8'))
             if res['status'] == 'OK':
                 for p in res['results']:
                     list.append(p)
@@ -44,7 +43,7 @@ def nearby_search(lat, lng, name):
                     url = url + lat + ',' + lng + '&keyword=' + urllib.parse.quote(name.encode('utf8')) + '&rankby=distance&key=' + master_key + '&pagetoken=' + page_token
                     #print url
                     req = requests.get(url)
-                    res = json.loads(req.content)
+                    res = json.loads(req.content.decode('utf-8'))
                     if res['status'] == 'OK':
                         for p in res['results']:
                             list.append(p)
@@ -76,7 +75,7 @@ def get_direction(lat1, lng1, lat2, lng2, k):
     url = 'https://maps.googleapis.com/maps/api/directions/json?origin='
     url = url + lat1 + ',' + lng1 + '&destination=' + lat2 + ',' + lng2 + '&avoid=tolls&departure_time=1514764799000&key=' + k
     req = requests.get(url)
-    res = json.loads(req.content)
+    res = json.loads(req.content.decode('utf-8'))
     err_message = ''
     d1 = d2 = d3 = 0
     if res['status'] == 'OK':
@@ -177,7 +176,7 @@ def main():
     wb = xlrd.open_workbook('village_stat_2.xlsx')
     ws = wb.sheet_by_index(0)
     k_i = 0
-    xlname = 'check_all_atm.xlsx'
+    xlname = 'check_all_branch.xlsx'
 
     if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), xlname)):
         owb = openpyxl.load_workbook(xlname, read_only=False)
@@ -202,12 +201,12 @@ def main():
         lat = str(ws.cell_value(i, 93))
         lng = str(ws.cell_value(i, 92))
         print (lat, lng),
-        d, names, status, message = get_nearest_dist(lat, lng, u'atm', master_key)
+        d, names, status, message = get_nearest_dist(lat, lng, u'ธนาคาร', master_key)
         print(status),
 
         while status == 'OVER_QUERY_LIMIT' and k_i < 5:
             k_i += 1
-            d, names, status, message = get_nearest_dist(lat, lng, u'atm', master_key)
+            d, names, status, message = get_nearest_dist(lat, lng, u'ธนธนาคาร', master_key)
             print(status),
 
         if status == 'OK':
