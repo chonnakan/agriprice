@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import requests
 import datetime
 import xlsxwriter
@@ -11,7 +10,7 @@ for year in range(2009, 2017):
         max_date = 365
      #print year
     for p_id in range(1, 78):
-        print p_id, year
+        print(p_id, year,)
         start_date = datetime.datetime(year, 1, 1)
         wb = xlsxwriter.Workbook('rice_%d_%d.xlsx'%(p_id,year))
         ws = wb.add_worksheet('%d'%year)
@@ -24,7 +23,7 @@ for year in range(2009, 2017):
             prms['province'] = p_id
             req = requests.post(url,params={'ic': 1}, data=prms)
             soup = BeautifulSoup(req.text, 'html.parser')
-            #print date
+            #print(date,)
             if u'ไม่พบข้อมูลค่ะ' in soup.get_text():
                 continue
             else:
